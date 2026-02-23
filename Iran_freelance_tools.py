@@ -1,20 +1,24 @@
-# تابع تبدیل درآمد دلاری/درهمی به تومان با نرخ روز
-def convert_to_toman(amount, exchange_rate):
+# تابع محاسبه هوشمند کارمزد برای ایرانی جماعت
+def calculate_smart_fee(total_price):
     """
-    این تابع مبلغ ارزی را می‌گیرد و به تومان تبدیل می‌کند.
+    اگر پروژه بالای ۱۰ میلیون باشد: ۷٪ کارمزد
+    اگر پروژه زیر ۱۰ میلیون باشد: ۱۰٪ کارمزد
     """
-    result = amount * exchange_rate
-    return result
+    if total_price > 10000000:
+        fee_percent = 7
+    else:
+        fee_percent = 10
+        
+    fee_amount = (total_price * fee_percent) / 100
+    profit = total_price - fee_amount
+    return profit, fee_percent
 
-# تابع محاسبه سهم فریلنسر بعد از کسر کارمزد سایت (مثلاً پونیشا یا فریلنسر)
-def calculate_pure_profit(total_project_price, fee_percent=10):
-    fee_amount = (total_project_price * fee_percent) / 100
-    profit = total_project_price - fee_amount
-    return profit
+# --- تست برنامه با دو عدد متفاوت ---
+project_1 = 15000000  # ۱۵ میلیون تومان
+project_2 = 5000000   # ۵ میلیون تومان
 
-# --- تست برای یک پروژه داخلی ---
-project_toman = 10000000  # ۱۰ میلیون تومان
-final_money = calculate_pure_profit(project_toman, 15) # با کسر ۱۵٪ کارمزد
+result1, rate1 = calculate_smart_fee(project_1)
+result2, rate2 = calculate_smart_fee(project_2)
 
-print(f"مبلغ پروژه: {project_toman} تومان")
-print(f"سودی که به دستت می‌رسه: {final_money} تومان")
+print(f"پروژه بزرگ: {project_1} تومان | کارمزد: {rate1}% | سود نهایی: {result1}")
+print(f"پروژه کوچک: {project_2} تومان | کارمزد: {rate2}% | سود نهایی: {result2}")
